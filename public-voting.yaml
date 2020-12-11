@@ -2,8 +2,8 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
-    name: customerA-clusterY
-  name: customerA-clusterY
+    name: customera-clustery
+  name: customer-clustery
 ---
 apiVersion: apps/v1
 kind: Deployment
