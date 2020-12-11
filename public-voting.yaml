@@ -1,21 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: azure-vote-back
+  name: public-vote-back
+  namespace: customerA-clusterY
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: azure-vote-back
+      app: public-vote-back
   template:
     metadata:
       labels:
-        app: azure-vote-back
+        app: public-vote-back
     spec:
       nodeSelector:
         kubernetes.io/os: linux
       containers:
-      - name: azure-vote-back
+      - name: public-vote-back
         image: redis
         env:
         - name: ALLOW_EMPTY_PASSWORD
@@ -34,32 +35,32 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: azure-vote-back
+  name: public-vote-back
 spec:
   ports:
   - port: 6379
   selector:
-    app: azure-vote-back
+    app: public-vote-back
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: azure-vote-front
+  name: public-vote-front
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: azure-vote-front
+      app: public-vote-front
   template:
     metadata:
       labels:
-        app: azure-vote-front
+        app: public-vote-front
     spec:
       nodeSelector:
         kubernetes.io/os: linux
       containers:
-      - name: azure-vote-front
-        image: healthineerdemoacr.azurecr.io/azure-vote-front:v1
+      - name: public-vote-front
+        image: microsoft/public-vote-front:v1
         resources:
           requests:
             cpu: 250m
@@ -71,15 +72,15 @@ spec:
         - containerPort: 80
         env:
         - name: REDIS
-          value: "azure-vote-back"
+          value: "public-vote-back"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: azure-vote-front
+  name: public-vote-front
 spec:
-  type: NodePort
   ports:
   - port: 80
   selector:
-    app: azure-vote-front
+    app: public-vote-front
+  type: NodePort
